@@ -9,3 +9,4 @@ void is_game_over();
 void restart();
 void new_num();
 void start();
+void end();

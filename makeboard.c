@@ -45,3 +45,7 @@ void removeCursor(void) {
 	curInfo.bVisible = FALSE;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }
+void initGame() {
+	removeCursor();
+	initBoard();
+}

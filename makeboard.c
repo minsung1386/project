@@ -49,3 +49,15 @@ void initGame() {
 	removeCursor();
 	initBoard();
 }
+void initBoard(void) {
+	gotoxy(BOARD_POS_X, BOARD_POS_Y);
+	printf("忙式式式式式式式式式式式式式式式式式式式式式式式式忖");
+	for (int i = 1; i < 13; i++) {
+		gotoxy(BOARD_POS_X, BOARD_POS_Y + i);
+		printf("弛                        弛");
+	}
+	gotoxy(BOARD_POS_X, BOARD_POS_Y + 13);
+	printf("戌式式式式式式式式式式式式式式式式式式式式式式式式戎");
+	gotoxy(BOARD_POS_X, BOARD_POS_Y + 16);
+	printf("Score : %d", cur_score);
+}

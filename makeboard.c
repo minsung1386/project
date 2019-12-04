@@ -61,3 +61,29 @@ void initBoard(void) {
 	gotoxy(BOARD_POS_X, BOARD_POS_Y + 16);
 	printf("Score : %d", cur_score);
 }
+void draw(void) {
+	int i, j;
+	int num;
+	for (i = 0; i < BOARD_SIZE; i++) {
+		for (j = 0; j < BOARD_SIZE; j++) {
+			gotoxy(BOARD_POS_X + j * 6, BOARD_POS_Y + i * 3);
+			if (board[i][j] == 0) {		//블럭에 숫자 없음
+				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 1);	//칸 하나당 6(가로) x 3(세로)
+				printf("┌───┐");
+				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 2);
+				printf("│  X│");
+				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 3);
+				printf("└───┘");
+			}
+			else {	//블럭에 숫자 존재.
+				num = board[i][j];
+				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 1);
+				printf("┌───┐");
+				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 2);
+				printf("│%3d│", num);
+				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 3);
+				printf("└───┘");
+			}
+		}
+	}
+}

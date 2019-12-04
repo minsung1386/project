@@ -38,3 +38,10 @@ void gotoxy(int x, int y) {
 	Pos.Y = y;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
+
+void removeCursor(void) {
+	CONSOLE_CURSOR_INFO curInfo;
+	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+	curInfo.bVisible = FALSE;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+}

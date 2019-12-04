@@ -18,3 +18,23 @@ void removeCursor(void);
 void initBoard(void);
 void draw(void);
 void newGame(void);
+
+main() {
+	initGame();
+	while (1) {
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				board[i][j] = i + j;
+			}
+		}
+		draw();
+		_getch();
+	}
+}
+
+void gotoxy(int x, int y) {
+	COORD Pos;
+	Pos.X = x;
+	Pos.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
+}

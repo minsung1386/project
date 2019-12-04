@@ -87,3 +87,15 @@ void draw(void) {
 		}
 	}
 }
+void newGame(void) {
+	system("cls");
+	cur_score = 0;
+
+
+	int i, j;
+	for (i = 0; i < BOARD_SIZE; i++) {
+		for (j = 0; j < BOARD_SIZE; j++) {
+			board[i][j] = 0;
+		}
+	}
+}

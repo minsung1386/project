@@ -8,7 +8,7 @@
 #define A 97
 #define D 100
 #define Z 122
-#define X 121
+#define X 120
 #define C 99
 
 extern int board[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};

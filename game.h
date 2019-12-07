@@ -2,10 +2,14 @@
 #define __GAME_H__
 
 #define ESC 27
-#define LEFT 75
-#define UP 72
-#define DOWN 80
-#define RIGHT 77
+#define Q 113
+#define W 119
+#define E 101
+#define A 97
+#define D 100
+#define Z 122
+#define X 121
+#define C 99
 
 extern int board[4][4] = {{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}};
 extern int cur_score;

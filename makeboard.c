@@ -25,12 +25,8 @@ int is_game_over(void);
 void new_num(void);
 void start(void);
 void end(void);
-void drawBoard(void);   //debug
 
 main() {
-    initGame();
-    draw();
-    drawBoard();    //debug
     start();
 }
 
@@ -38,7 +34,6 @@ void gotoxy(int x, int y) {
     COORD Pos = { x,y };
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
-
 void removeCursor(void) {
 	CONSOLE_CURSOR_INFO curInfo;
 	GetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
@@ -53,6 +48,11 @@ void initGame() {
     new_num();
 }
 void initBoard(void) {
+    int i, j;
+    for (i = 0; i < BOARD_SIZE; i++) {
+        for (j = 0; j < BOARD_SIZE; j++)
+            board[i][j] = 0;
+    }
 	gotoxy(BOARD_POS_X, BOARD_POS_Y);
 	printf("┌────────────────────────┐");
 	for (int i = 1; i < 13; i++) {
@@ -107,6 +107,13 @@ void newGame(void) {
 }
 void start()
 {
+LOOP_START:
+    /*****initailize******/
+    score = 0;
+    system("cls");
+    initGame();
+    draw();
+    /*********************/
     int key;
     while (is_game_over() != 1)
     {
@@ -118,15 +125,12 @@ void start()
         else
         {
             move();
-            draw();
         }
-        drawBoard();
     }
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y);
     printf("Game Over..                             ");
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
     printf("                                        ");
-    draw();
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
     printf("Restart? (Y/N:quit)");
     while (1)
@@ -134,11 +138,13 @@ void start()
         switch (_getch())
         {
         case 121:   //y
+            goto LOOP_START;
         case 89:    //Y
-            start();
-            break;
+            goto LOOP_START;
         case 110:   //n
+            end();
         case 78:    //N
+            end();
         case ESC:
             end();
         }
@@ -153,7 +159,7 @@ void move()
     switch (key)
     {
 
-    case Q: //left up
+    case UPPER_LEFT: //left up
         while (move != 0)
         {
             move = 0;
@@ -263,7 +269,7 @@ void move()
 
         }
         break;
-    case W: // up
+    case UP: // up
         for (; move != 0;) {
             move = 0;
             for (i = 1; i <= 3; i++) { //1번행, 2번행, 3번행을 순서대로 검사 
@@ -284,7 +290,7 @@ void move()
             if (move != 0) draw();
         }
         break;
-    case E: //right up
+    case UPPER_RIGHT: //right up
         while (move != 0)
         {
             move = 0;
@@ -396,7 +402,7 @@ void move()
 
         }
         break;
-    case A: //left
+    case LEFT: //left
         for (; move != 0;) {
             move = 0;
             for (i = 0; i < 4; i++) {
@@ -419,7 +425,7 @@ void move()
                 draw();
         }
         break;
-    case D: //right
+    case RIGHT: //right
         for (; move != 0;) {
             move = 0;
             for (j = 2; j >= 0; j--) { //2번열, 1번열, 0번열을 순서대로 검사. 
@@ -440,7 +446,7 @@ void move()
             if (move != 0) draw();
         }
         break;
-    case Z: //left down
+    case LOWER_LEFT: //left down
         while (move != 0)
         {
             move = 0;
@@ -552,7 +558,7 @@ void move()
 
         }
         break;
-    case X: //down
+    case DOWN: //down
         for (; move != 0;) {
             move = 0;
             for (i = 2; i >= 0; i--) { //2번행, 1번행, 0번행을 순서대로 검사  
@@ -574,7 +580,7 @@ void move()
                 draw();
         }
         break;
-    case C: //right down
+    case LOWER_RIGHT: //right down
         while (move != 0)
         {
             move = 0;
@@ -687,13 +693,15 @@ void move()
         }
         break;
     }
-    for (i = 0; i < 4; i++)  //임시로 증가시켰던 10000을 빼줌. 
+    for (i = 0; i < 4; i++) {  //임시로 증가시켰던 10000을 빼줌. 
         for (j = 0; j < 4; j++) {
             if (board[i][j] > 10000)
                 board[i][j] -= 10000;
         }
+    }
     if (act > 0)
         new_num();
+    draw();
 }
 void new_num()
 {
@@ -701,7 +709,7 @@ void new_num()
     while (1)
     {
         int new_data = 2 * (rand() % 2 + 1);
-        int i = rand() % 3, j = rand() % 3;
+        int i = rand() % BOARD_SIZE, j = rand() % BOARD_SIZE;
         if (board[i][j] == 0)
         {
             board[i][j] = new_data;
@@ -733,14 +741,4 @@ int is_game_over()
 void end()
 {
     exit(0);
-}
-void drawBoard(void)
-{
-    gotoxy(0, 0);
-    int i, j;
-    for (i = 0; i < BOARD_SIZE; i++) {
-        for (j = 0; j < BOARD_SIZE; j++)
-            printf("%2d ", board[i][j]);
-        printf("\n");
-    }
 }

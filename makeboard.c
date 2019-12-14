@@ -14,20 +14,23 @@ int score;
 int high_score;
 
 void gotoxy(int x, int y);
-void initGame(void);
 void removeCursor(void);
+void initGame(void);
 void initBoard(void);
+void setScore(void);
 void draw(void);
 void newGame(void);
-void move();
-int is_game_over();
-void new_num();
-void start();
-void end();
+void move(void);
+int is_game_over(void);
+void new_num(void);
+void start(void);
+void end(void);
+void drawBoard(void);   //debug
 
 main() {
     initGame();
     draw();
+    drawBoard();    //debug
     start();
 }
 
@@ -58,8 +61,11 @@ void initBoard(void) {
 	}
 	gotoxy(BOARD_POS_X, BOARD_POS_Y + 13);
 	printf("└────────────────────────┘");
-	gotoxy(BOARD_POS_X, BOARD_POS_Y + 16);
-	printf("Score : %d", score);
+    setScore();
+}
+void setScore(void) {
+    gotoxy(BOARD_POS_X, BOARD_POS_Y + 16);
+    printf("Score : %d", score);
 }
 void draw(void) {
 	int i, j;
@@ -77,6 +83,7 @@ void draw(void) {
 			}
 			else {	//블럭에 숫자 존재.
 				num = board[i][j];
+                if (num > 10000)num -= 10000;
 				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 1);
 				printf("┌───┐");
 				gotoxy(BOARD_POS_X + j * 6 + 2, BOARD_POS_Y + i * 3 + 2);
@@ -86,6 +93,7 @@ void draw(void) {
 			}
 		}
 	}
+    setScore();
 }
 void newGame(void) {
 	system("cls");
@@ -110,8 +118,17 @@ void start()
         else
         {
             move();
+            draw();
         }
+        drawBoard();
     }
+    gotoxy(BOARD_POS_X + 28, BOARD_POS_Y);
+    printf("Game Over..                             ");
+    gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
+    printf("                                        ");
+    draw();
+    gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
+    printf("Restart? (Y/N:quit)");
     while (1)
     {
         switch (_getch())
@@ -127,7 +144,6 @@ void start()
         }
     }
 }
-
 void move()
 {
     int i, j;
@@ -717,4 +733,14 @@ int is_game_over()
 void end()
 {
     exit(0);
+}
+void drawBoard(void)
+{
+    gotoxy(0, 0);
+    int i, j;
+    for (i = 0; i < BOARD_SIZE; i++) {
+        for (j = 0; j < BOARD_SIZE; j++)
+            printf("%2d ", board[i][j]);
+        printf("\n");
+    }
 }

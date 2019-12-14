@@ -186,7 +186,7 @@ void move()
 
             }
             //두번째줄
-            for (int i = 2; i <= 3; i++)
+            for (i = 2; i <= 3; i++)
             {
                 if (board[i][i - 1] == 0 || board[i][i - 1] > 10000)
                     continue;
@@ -205,7 +205,7 @@ void move()
                 move++;
             }
             //3번째줄
-            for (int i = 1; i <= 3; i++) {
+            for (i = 1; i <= 3; i++) {
                 if (board[i][i] == 0 || board[i][i] > 10000)
                     continue;
                 if (board[i][i] != board[i - 1][i - 1] && board[i - 1][i - 1] != 0)
@@ -223,7 +223,7 @@ void move()
                 move++;
             }
             //4번째줄
-            for (int i = 1; i <= 2; i++)
+            for (i = 1; i <= 2; i++)
             {
                 if (board[i][i + 1] == 0 || board[i][i + 1] > 10000)
                     continue;
@@ -705,11 +705,12 @@ void move()
 }
 void new_num()
 {
+    int i, j;
     srand((unsigned)time(NULL));
     while (1)
     {
         int new_data = 2 * (rand() % 2 + 1);
-        int i = rand() % BOARD_SIZE, j = rand() % BOARD_SIZE;
+        i = rand() % BOARD_SIZE, j = rand() % BOARD_SIZE;
         if (board[i][j] == 0)
         {
             board[i][j] = new_data;

@@ -2,18 +2,14 @@
 #define __GAME_H__
 
 #define ESC 27
-#define Q 113
-//#define W 119
-#define W 72
-#define E 101
-//#define A 97
-#define A 75
-//#define D 100
-#define D 77
-#define Z 122
-//#define X 120
-#define X 80
-#define C 99
+#define UPPER_LEFT 113
+#define UP 72
+#define UPPER_RIGHT 101
+#define LEFT 75
+#define RIGHT 77
+#define LOWER_LEFT 122
+#define DOWN 80
+#define LOWER_RIGHT 99
 
 extern int cur_score;
 

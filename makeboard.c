@@ -118,15 +118,14 @@ void start()
         else
         {
             move();
-            draw();
         }
-        drawBoard();
+        drawBoard();        //debug
     }
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y);
     printf("Game Over..                             ");
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
     printf("                                        ");
-    draw();
+    //draw();
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
     printf("Restart? (Y/N:quit)");
     while (1)
@@ -687,13 +686,15 @@ void move()
         }
         break;
     }
-    for (i = 0; i < 4; i++)  //ÀÓ½Ã·Î Áõ°¡½ÃÄ×´ø 10000À» »©ÁÜ. 
+    for (i = 0; i < 4; i++) {  //ÀÓ½Ã·Î Áõ°¡½ÃÄ×´ø 10000À» »©ÁÜ. 
         for (j = 0; j < 4; j++) {
             if (board[i][j] > 10000)
                 board[i][j] -= 10000;
         }
+    }
     if (act > 0)
         new_num();
+    draw();
 }
 void new_num()
 {
@@ -701,7 +702,7 @@ void new_num()
     while (1)
     {
         int new_data = 2 * (rand() % 2 + 1);
-        int i = rand() % 3, j = rand() % 3;
+        int i = rand() % BOARD_SIZE, j = rand() % BOARD_SIZE;
         if (board[i][j] == 0)
         {
             board[i][j] = new_data;
@@ -734,7 +735,7 @@ void end()
 {
     exit(0);
 }
-void drawBoard(void)
+void drawBoard(void)        //debug
 {
     gotoxy(0, 0);
     int i, j;
@@ -743,4 +744,4 @@ void drawBoard(void)
             printf("%2d ", board[i][j]);
         printf("\n");
     }
-}
+}  

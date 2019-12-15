@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <conio.h>
 #include "game.h"
+#include "makeboard.h"
 int score;
 int chance;//
 void move();

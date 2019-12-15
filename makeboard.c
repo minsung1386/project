@@ -12,6 +12,7 @@
 int board[BOARD_SIZE][BOARD_SIZE];
 int score;
 int high_score;
+int chance;
 
 void gotoxy(int x, int y);
 void removeCursor(void);
@@ -110,6 +111,7 @@ void start()
 LOOP_START:
     /*****initailize******/
     score = 0;
+	chance = 5;
     system("cls");
     initGame();
     draw();
@@ -160,7 +162,7 @@ void move(int key)
     {
 
     case UPPER_LEFT: //left up
-        while (move != 0)
+        while (move != 0&&chance>0)
         {
             move = 0;
             //첫번째줄
@@ -288,11 +290,14 @@ void move(int key)
                     move++;
                 }
             }
-            if (move != 0) draw();
+			if (move != 0) {
+				draw();
+				chance--;
+			}
         }
         break;
     case UPPER_RIGHT: //right up
-        while (move != 0)
+        while (move != 0&&chance>0)
         {
             move = 0;
             //첫번째줄
@@ -396,8 +401,11 @@ void move(int key)
                 break;
 
             }
-            if (move != 0)
-                draw();
+			if (move != 0)
+			{
+				draw();
+				chance--;
+			}
 
 
 
@@ -448,7 +456,7 @@ void move(int key)
         }
         break;
     case LOWER_LEFT: //left down
-        while (move != 0)
+        while (move != 0&&chance>0)
         {
             move = 0;
             //첫번째줄
@@ -552,8 +560,11 @@ void move(int key)
                 break;
 
             }
-            if (move != 0)
-                draw();
+			if (move != 0)
+			{
+				draw();
+				chance--;
+			}
 
 
 
@@ -582,7 +593,7 @@ void move(int key)
         }
         break;
     case LOWER_RIGHT: //right down
-        while (move != 0)
+        while (move != 0&&chance>0)
         {
             move = 0;
             //첫번째줄
@@ -686,8 +697,11 @@ void move(int key)
                 break;
 
             }
-            if (move != 0)
-                draw();
+			if (move != 0)
+			{
+				draw();
+				chance++;
+			}
 
 
 

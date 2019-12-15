@@ -124,7 +124,7 @@ LOOP_START:
         }
         else
         {
-            move();
+            move(key);
         }
     }
     gotoxy(BOARD_POS_X + 28, BOARD_POS_Y);
@@ -150,12 +150,12 @@ LOOP_START:
         }
     }
 }
-void move()
+void move(int key)
 {
     int i, j;
     int move = -1;
     int act = 0;
-    int key = _getch();
+   
     switch (key)
     {
 
@@ -245,6 +245,7 @@ void move()
             //5¹øÂ°ÁÙ
             while (1)
             {
+				
                 if (board[1][3] != 0 && board[1][3] == board[0][2])
                 {
                     board[1][3] = 0;

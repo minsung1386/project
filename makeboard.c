@@ -116,7 +116,7 @@ void newGame(void) {
 		}
 	}
 }
-void start()
+void start(void)
 {
 START_LOOP:
     /*****initailize******/
@@ -370,7 +370,8 @@ void move(int key)
                 draw();
             }
         }
-        chance--;
+        if (act > 0)
+            chance--;
         break;
     case UPPER_RIGHT: //right up(e)
         while (move != 0 && chance > 0)
@@ -482,7 +483,8 @@ void move(int key)
                 draw();
             }
         }
-        chance--;
+        if (act > 0)
+            chance--;
         break;
     case LOWER_LEFT: //left down(z)
         while (move != 0 && chance > 0)
@@ -594,7 +596,8 @@ void move(int key)
                 draw();
             }
         }
-        chance--;
+        if (act > 0)
+            chance--;
         break;
     case LOWER_RIGHT: //right down(c)
         while (move != 0 && chance > 0)
@@ -701,12 +704,12 @@ void move(int key)
                 break;
 
             }
-            if (move != 0)
-            {
+            if (move != 0) {
                 draw();
             }
         }
-        chance--;
+        if (act > 0)
+            chance--;
         break;
     }
     for (i = 0; i < 4; i++) {  //ÀÓ½Ã·Î Áõ°¡½ÃÄ×´ø 10000À» »©ÁÜ. 

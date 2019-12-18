@@ -167,11 +167,101 @@ void move(int key)
     int i, j;
     int move = -1;
     int act = 0;
-   
+
     switch (key)
     {
+    case LEFT: //left
+        for (; move != 0;) {
+            move = 0;
+            for (i = 0; i < 4; i++) {
+                for (j = 1; j <= 3; j++) {
+                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
+                    if (board[i][j - 1] != 0 && board[i][j - 1] != board[i][j]) continue;
+                    if (board[i][j - 1] == 0) board[i][j - 1] = board[i][j];
+                    else if (board[i][j] == board[i][j - 1]) {
+                        board[i][j - 1] *= 2;
+                        board[i][j - 1] += 10000;
+                        score += 2 * (board[i][j]);
+                    }
+                    board[i][j] = 0;
+                    act++;
+                    move++;
+                }
+            }
+
+            if (move != 0)
+                draw();
+        }
+        break;
+    case RIGHT: //right
+        for (; move != 0;) {
+            move = 0;
+            for (j = 2; j >= 0; j--) { //2번열, 1번열, 0번열을 순서대로 검사. 
+                for (i = 0; i < 4; i++) {  // 모든행을 검사
+                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
+                    if (board[i][j + 1] != 0 && board[i][j + 1] != board[i][j]) continue;
+                    if (board[i][j + 1] == 0) board[i][j + 1] = board[i][j];
+                    else if (board[i][j] < 10000 && board[i][j] == board[i][j + 1]) {
+                        board[i][j + 1] *= 2;
+                        board[i][j + 1] += 10000;
+                        score += 2 * (board[i][j]);
+                    }
+                    board[i][j] = 0;
+                    move++;
+                    act++;
+                }
+            }
+            if (move != 0) draw();
+        }
+        break;
+    case UP: // up
+        for (; move != 0;) {
+            move = 0;
+            for (i = 1; i <= 3; i++) { //1번행, 2번행, 3번행을 순서대로 검사 
+                for (j = 0; j < 4; j++) { //모든 열을 검사 
+                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
+                    if (board[i - 1][j] != 0 && board[i - 1][j] != board[i][j]) continue;
+                    if (board[i - 1][j] == 0) board[i - 1][j] = board[i][j];
+                    else if (board[i][j] < 10000 && board[i][j] == board[i - 1][j]) {
+                        board[i - 1][j] *= 2;
+                        board[i - 1][j] += 10000;
+                        score += 2 * (board[i][j]);
+                    }
+                    board[i][j] = 0;
+                    act++;
+                    move++;
+                }
+            }
+            if (move != 0) {
+                draw();
+            }
+        }
+        break;
+    case DOWN: //down
+        for (; move != 0;) {
+            move = 0;
+            for (i = 2; i >= 0; i--) { //2번행, 1번행, 0번행을 순서대로 검사  
+                for (j = 0; j < 4; j++) { //모든 열을 검사  
+                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
+                    if (board[i + 1][j] != 0 && board[i + 1][j] != board[i][j]) continue;
+                    if (board[i + 1][j] == 0) board[i + 1][j] = board[i][j];
+                    else if (board[i][j] < 10000 && board[i][j] == board[i + 1][j]) {
+                        board[i + 1][j] *= 2;
+                        board[i + 1][j] += 10000;
+                        score += 2 * (board[i][j]);
+                    }
+                    board[i][j] = 0;
+                    act++;
+                    move++;
+                }
+            }
+            if (move != 0)
+                draw();
+        }
+        break;
+
     case UPPER_LEFT: //left up(q)
-        while (move != 0&&chance>0)
+        while (move != 0 && chance > 0)
         {
             move = 0;
             //첫번째줄
@@ -256,7 +346,7 @@ void move(int key)
             //5번째줄
             while (1)
             {
-				
+
                 if (board[1][3] != 0 && board[1][3] == board[0][2])
                 {
                     board[1][3] = 0;
@@ -281,29 +371,6 @@ void move(int key)
             }
         }
         chance--;
-        break;
-    case UP: // up
-        for (; move != 0;) {
-            move = 0;
-            for (i = 1; i <= 3; i++) { //1번행, 2번행, 3번행을 순서대로 검사 
-                for (j = 0; j < 4; j++) { //모든 열을 검사 
-                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
-                    if (board[i - 1][j] != 0 && board[i - 1][j] != board[i][j]) continue;
-                    if (board[i - 1][j] == 0) board[i - 1][j] = board[i][j];
-                    else if (board[i][j] < 10000 && board[i][j] == board[i - 1][j]) {
-                        board[i - 1][j] *= 2;
-                        board[i - 1][j] += 10000;
-                        score += 2 * (board[i][j]);
-                    }
-                    board[i][j] = 0;
-                    act++;
-                    move++;
-                }
-            }
-			if (move != 0) {
-				draw();
-			}
-        }
         break;
     case UPPER_RIGHT: //right up(e)
         while (move != 0 && chance > 0)
@@ -417,52 +484,8 @@ void move(int key)
         }
         chance--;
         break;
-    case LEFT: //left
-        for (; move != 0;) {
-            move = 0;
-            for (i = 0; i < 4; i++) {
-                for (j = 1; j <= 3; j++) {
-                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
-                    if (board[i][j - 1] != 0 && board[i][j - 1] != board[i][j]) continue;
-                    if (board[i][j - 1] == 0) board[i][j - 1] = board[i][j];
-                    else if (board[i][j] == board[i][j - 1]) {
-                        board[i][j - 1] *= 2;
-                        board[i][j - 1] += 10000;
-                        score += 2 * (board[i][j]);
-                    }
-                    board[i][j] = 0;
-                    act++;
-                    move++;
-                }
-            }
-
-            if (move != 0)
-                draw();
-        }
-        break;
-    case RIGHT: //right
-        for (; move != 0;) {
-            move = 0;
-            for (j = 2; j >= 0; j--) { //2번열, 1번열, 0번열을 순서대로 검사. 
-                for (i = 0; i < 4; i++) {  // 모든행을 검사
-                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
-                    if (board[i][j + 1] != 0 && board[i][j + 1] != board[i][j]) continue;
-                    if (board[i][j + 1] == 0) board[i][j + 1] = board[i][j];
-                    else if (board[i][j] < 10000 && board[i][j] == board[i][j + 1]) {
-                        board[i][j + 1] *= 2;
-                        board[i][j + 1] += 10000;
-                        score += 2 * (board[i][j]);
-                    }
-                    board[i][j] = 0;
-                    move++;
-                    act++;
-                }
-            }
-            if (move != 0) draw();
-        }
-        break;
     case LOWER_LEFT: //left down(z)
-        while (move != 0&&chance>0)
+        while (move != 0 && chance > 0)
         {
             move = 0;
             //첫번째줄
@@ -566,37 +589,15 @@ void move(int key)
                 break;
 
             }
-			if (move != 0)
-			{
-				draw();
-			}
+            if (move != 0)
+            {
+                draw();
+            }
         }
         chance--;
         break;
-    case DOWN: //down
-        for (; move != 0;) {
-            move = 0;
-            for (i = 2; i >= 0; i--) { //2번행, 1번행, 0번행을 순서대로 검사  
-                for (j = 0; j < 4; j++) { //모든 열을 검사  
-                    if (board[i][j] == 0 || board[i][j] > 10000) continue;
-                    if (board[i + 1][j] != 0 && board[i + 1][j] != board[i][j]) continue;
-                    if (board[i + 1][j] == 0) board[i + 1][j] = board[i][j];
-                    else if (board[i][j] < 10000 && board[i][j] == board[i + 1][j]) {
-                        board[i + 1][j] *= 2;
-                        board[i + 1][j] += 10000;
-                        score += 2 * (board[i][j]);
-                    }
-                    board[i][j] = 0;
-                    act++;
-                    move++;
-                }
-            }
-            if (move != 0)
-                draw();
-        }
-        break;
     case LOWER_RIGHT: //right down(c)
-        while (move != 0&&chance>0)
+        while (move != 0 && chance > 0)
         {
             move = 0;
             //첫번째줄

@@ -3,16 +3,28 @@
 #include <math.h>
 #include <Windows.h>
 #include <conio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "game.h"
+#pragma warning (disable:4996)
 
 #define BOARD_SIZE 4
 #define BOARD_POS_X 10
 #define BOARD_POS_Y 5
 
+typedef struct {
+    int usr_rank;
+    char usr_name[30];
+    int usr_score;
+}User;
+
 int board[BOARD_SIZE][BOARD_SIZE];
 int score;
 int high_score;
 int chance;
+char name[40];
+User userList[30];
+int userlist_len = 0;
 
 void gotoxy(int x, int y);
 void removeCursor(void);
@@ -22,13 +34,19 @@ void draw_Score(void);
 void draw_Chance(void);
 void draw(void);
 void newGame(void);
-void move(int key);
-int is_game_over(void);
-void new_num(void);
 void start(void);
+void move(int key);
+void new_num(void);
+int is_game_over(void);
 void end(void);
+void draw_Rank(void);
+void draw_RegisterRank(void);
+void registerRank(void);
+void read_Rank(void);
+int static compare(const void* first, const void* second);
 
-main() {
+void main() {
+    system("mode con cols=100 lines=30");
     start();
 }
 
@@ -42,12 +60,14 @@ void removeCursor(void) {
 	curInfo.bVisible = FALSE;
 	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }
-void initGame() {
+void initGame(void) {
 	removeCursor();
+    read_Rank();
 	initBoard();
     //generate first two random number
     new_num();
     new_num();
+    name[0] = '\0';
 }
 void initBoard(void) {
     int i, j;
@@ -65,6 +85,7 @@ void initBoard(void) {
 	printf("戌式式式式式式式式式式式式式式式式式式式式式式式式戎");
     draw_Score();
     draw_Chance();
+    draw_Rank();
 }
 void draw_Score(void) {
     gotoxy(BOARD_POS_X + 2, BOARD_POS_Y + 16);
@@ -80,6 +101,7 @@ void draw_Chance(void) {
 void draw(void) {
 	int i, j;
 	int num;
+
 	for (i = 0; i < BOARD_SIZE; i++) {
 		for (j = 0; j < BOARD_SIZE; j++) {
 			gotoxy(BOARD_POS_X + j * 6, BOARD_POS_Y + i * 3);
@@ -139,12 +161,10 @@ START_LOOP:
             move(key);
         }
     }
-    gotoxy(BOARD_POS_X + 28, BOARD_POS_Y);
-    printf("Game Over..                             ");
-    gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
-    printf("                                        ");
-    gotoxy(BOARD_POS_X + 28, BOARD_POS_Y + 2);
-    printf("Restart? (Y/N:quit)");
+    gotoxy(BOARD_POS_X + 2, BOARD_POS_Y + 18);
+    printf("GAME OVER!!!");
+    gotoxy(BOARD_POS_X + 2, BOARD_POS_Y + 19);
+    printf("Restart? (Y:restart/N:quit/R:register)");
     while (1)
     {
         switch (_getch())
@@ -157,6 +177,10 @@ START_LOOP:
             end();
         case 78:    //N
             end();
+        case 114:   //r
+            draw_RegisterRank();
+        case 82:    //R
+            draw_RegisterRank();
         case ESC:
             end();
         }
@@ -722,7 +746,7 @@ void move(int key)
         new_num();
     draw();
 }
-void new_num()
+void new_num(void)
 {
     int i, j;
     srand((unsigned)time(NULL));
@@ -737,7 +761,7 @@ void new_num()
         }
     }
 }
-int is_game_over()
+int is_game_over(void)
 {
     int i, j;
     //1. have an empty slot
@@ -758,7 +782,73 @@ int is_game_over()
             return 0;
     return 1;
 }
-void end()
+void end(void)
 {
     exit(0);
+}
+void read_Rank(void) {
+    int frank;
+    char fname[30];
+    int fscore;
+    FILE *fp = fopen("ranking.txt", "r");
+    while (!feof(fp)) {
+        fscanf(fp, "%d%s%d", &frank, fname, &fscore);
+        userList[userlist_len].usr_rank = frank;
+        strcpy(userList[userlist_len].usr_name, fname);
+        userList[userlist_len].usr_score = fscore;
+        userlist_len++;
+    }
+    fclose(fp);
+}
+void draw_Rank(void) {
+    gotoxy(BOARD_POS_X + 41, BOARD_POS_Y - 1);
+    printf("Ⅱ Ranking ９");
+    gotoxy(BOARD_POS_X + 34, BOARD_POS_Y);
+    printf("===========================");
+    gotoxy(BOARD_POS_X + 34, BOARD_POS_Y + 1);
+    printf("  Rank     Name     Score");
+    gotoxy(BOARD_POS_X + 34, BOARD_POS_Y + 2);
+    printf("===========================");
+    for (int i = 0; i < userlist_len; i++) {
+        gotoxy(BOARD_POS_X + 35, BOARD_POS_Y + 3+ i);
+        printf("%3d", userList[i].usr_rank);
+        gotoxy(BOARD_POS_X + 44, BOARD_POS_Y + 3 + i);
+        printf("%s", userList[i].usr_name);
+        gotoxy(BOARD_POS_X + 55, BOARD_POS_Y + 3 + i);
+        printf("%5d", userList[i].usr_score);
+    }
+}
+void draw_RegisterRank(void) {
+    gotoxy(BOARD_POS_X + 35, BOARD_POS_Y + 40);
+    printf("Name : ");
+    scanf("%s", name);
+    registerRank();
+}
+void registerRank(void) {
+    strcpy(userList[userlist_len].usr_name, name);
+    userList[userlist_len].usr_score = score;
+    userlist_len++;
+    qsort(userList, userlist_len, sizeof(User), compare);
+    for (int i = 0; i < userlist_len; i++) {
+        userList[i].usr_rank = i + 1;
+    }
+
+    FILE *fp_w = fopen("ranking.txt", "w");
+    for (int k = 0; k < userlist_len; k++) {
+        fprintf(fp_w, "%d %s %d", userList[k].usr_rank, userList[k].usr_name, userList[k].usr_score);
+        if (k != userlist_len - 1)
+            fprintf(fp_w, "\n");
+    }
+    fclose(fp_w);
+}
+int static compare(const void* first, const void* second) {
+    User *p1 = (User *)first;
+    User *p2 = (User *)second;
+
+    if (p1->usr_score > p2->usr_score)
+        return 1;
+    else if (p1->usr_score < p2->usr_score)
+        return -1;
+    else
+        return 0;
 }

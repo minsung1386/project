@@ -18,10 +18,11 @@ void gotoxy(int x, int y);
 void removeCursor(void);
 void initGame(void);
 void initBoard(void);
-void setScore(void);
+void draw_Score(void);
+void draw_Chance(void);
 void draw(void);
 void newGame(void);
-void move(void);
+void move(int key);
 int is_game_over(void);
 void new_num(void);
 void start(void);
@@ -62,11 +63,19 @@ void initBoard(void) {
 	}
 	gotoxy(BOARD_POS_X, BOARD_POS_Y + 13);
 	printf("戌式式式式式式式式式式式式式式式式式式式式式式式式戎");
-    setScore();
+    draw_Score();
+    draw_Chance();
 }
-void setScore(void) {
-    gotoxy(BOARD_POS_X, BOARD_POS_Y + 16);
+void draw_Score(void) {
+    gotoxy(BOARD_POS_X + 2, BOARD_POS_Y + 16);
     printf("Score : %d", score);
+}
+void draw_Chance(void) {
+    gotoxy(BOARD_POS_X + 2, BOARD_POS_Y + 15);
+    if (chance == 0)
+        printf("There is no chance!!");
+    else
+        printf("Chance : %d left", chance);
 }
 void draw(void) {
 	int i, j;
@@ -94,7 +103,8 @@ void draw(void) {
 			}
 		}
 	}
-    setScore();
+    draw_Score();
+    draw_Chance();
 }
 void newGame(void) {
 	system("cls");
@@ -108,7 +118,7 @@ void newGame(void) {
 }
 void start()
 {
-LOOP_START:
+START_LOOP:
     /*****initailize******/
     score = 0;
 	chance = 5;
@@ -140,9 +150,9 @@ LOOP_START:
         switch (_getch())
         {
         case 121:   //y
-            goto LOOP_START;
+            goto START_LOOP;
         case 89:    //Y
-            goto LOOP_START;
+            goto START_LOOP;
         case 110:   //n
             end();
         case 78:    //N
@@ -160,8 +170,7 @@ void move(int key)
    
     switch (key)
     {
-
-    case UPPER_LEFT: //left up
+    case UPPER_LEFT: //left up(q)
         while (move != 0&&chance>0)
         {
             move = 0;
@@ -267,10 +276,11 @@ void move(int key)
                 break;
 
             }
-            if (move != 0)
+            if (move != 0) {
                 draw();
-
+            }
         }
+        chance--;
         break;
     case UP: // up
         for (; move != 0;) {
@@ -292,12 +302,11 @@ void move(int key)
             }
 			if (move != 0) {
 				draw();
-				chance--;
 			}
         }
         break;
-    case UPPER_RIGHT: //right up
-        while (move != 0&&chance>0)
+    case UPPER_RIGHT: //right up(e)
+        while (move != 0 && chance > 0)
         {
             move = 0;
             //羅廓簞還
@@ -401,15 +410,12 @@ void move(int key)
                 break;
 
             }
-			if (move != 0)
-			{
-				draw();
-				chance--;
-			}
-
-
-
+            if (move != 0)
+            {
+                draw();
+            }
         }
+        chance--;
         break;
     case LEFT: //left
         for (; move != 0;) {
@@ -455,7 +461,7 @@ void move(int key)
             if (move != 0) draw();
         }
         break;
-    case LOWER_LEFT: //left down
+    case LOWER_LEFT: //left down(z)
         while (move != 0&&chance>0)
         {
             move = 0;
@@ -563,12 +569,9 @@ void move(int key)
 			if (move != 0)
 			{
 				draw();
-				chance--;
 			}
-
-
-
         }
+        chance--;
         break;
     case DOWN: //down
         for (; move != 0;) {
@@ -592,7 +595,7 @@ void move(int key)
                 draw();
         }
         break;
-    case LOWER_RIGHT: //right down
+    case LOWER_RIGHT: //right down(c)
         while (move != 0&&chance>0)
         {
             move = 0;
@@ -697,15 +700,12 @@ void move(int key)
                 break;
 
             }
-			if (move != 0)
-			{
-				draw();
-				chance++;
-			}
-
-
-
+            if (move != 0)
+            {
+                draw();
+            }
         }
+        chance--;
         break;
     }
     for (i = 0; i < 4; i++) {  //歜衛煎 隸陛衛儷湍 10000擊 貍邀. 

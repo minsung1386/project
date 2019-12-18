@@ -1,7 +1,8 @@
-1 seyoung 1000
-2 kirea 1600
-3 test2 2800
+1 minsung 10000
+2 UI 6333
+3 dlwlrma 4121
 4 test 3000
-5 dlwlrma 4121
-6 UI 6333
-7 minsung 10000
+5 test2 2800
+6 test4 2612
+7 kirea 1600
+8 seyoung 1000

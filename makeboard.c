@@ -845,9 +845,9 @@ int static compare(const void* first, const void* second) {
     User *p1 = (User *)first;
     User *p2 = (User *)second;
 
-    if (p1->usr_score > p2->usr_score)
+    if (p1->usr_score < p2->usr_score)
         return 1;
-    else if (p1->usr_score < p2->usr_score)
+    else if (p1->usr_score > p2->usr_score)
         return -1;
     else
         return 0;
